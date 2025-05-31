@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +8,7 @@ import { hardhat } from "viem/chains";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
+import { useAccount } from "wagmi";
 
 type HeaderMenuLink = {
   label: string;
@@ -59,6 +60,13 @@ export const HeaderMenuLinks = () => {
 export const Header = () => {
   const { targetNetwork } = useTargetNetwork();
   const isLocalNetwork = targetNetwork.id === hardhat.id;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { address } = useAccount();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsLoggedIn(!!address);
+  }, [address]);
 
   const burgerMenuRef = useRef<HTMLDetailsElement>(null);
   useOutsideClick(burgerMenuRef, () => {
@@ -86,13 +94,27 @@ export const Header = () => {
             <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
+            <span className="font-bold leading-tight">Real Estate</span>
+            <span className="text-xs">Tokenization</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
           <HeaderMenuLinks />
         </ul>
+        {isLoggedIn && (
+          <ul className="menu menu-horizontal px-1 gap-2">
+            <li>
+              <Link href="/create" className={pathname === "/create" ? "active" : ""}>
+                Create
+              </Link>
+            </li>
+            <li>
+              <Link href="/properties" className={pathname === "/properties" ? "active" : ""}>
+                My Real Estate
+              </Link>
+            </li>
+          </ul>
+        )}
       </div>
       <div className="navbar-end grow mr-4">
         <RainbowKitCustomConnectButton />
