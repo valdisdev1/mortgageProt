@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useScaffoldWriteContract } from '~~/hooks/scaffold-eth';
-import { uploadToIPFS } from '~~/utils/ipfs';
-import { notification } from '~~/utils/scaffold-eth';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { uploadToIPFS } from "~~/utils/ipfs";
+import { notification } from "~~/utils/scaffold-eth";
 
 export default function CreatePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    propertyAddress: '',
-    bedrooms: '',
-    bathrooms: '',
-    appraisedValue: '',
+    propertyAddress: "",
+    bedrooms: "",
+    bathrooms: "",
+    appraisedValue: "",
     image: null as File | null,
     valuationDocument: null as File | null,
   });
@@ -22,16 +22,16 @@ export default function CreatePage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
-    if (type === 'file') {
+    if (type === "file") {
       const files = e.target.files;
       setFormData(prev => ({
         ...prev,
-        [name]: files?.[0] || null
+        [name]: files?.[0] || null,
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -41,8 +41,8 @@ export default function CreatePage() {
     setIsLoading(true);
 
     try {
-      let imageHash = '';
-      let valuationHash = '';
+      let imageHash = "";
+      let valuationHash = "";
 
       if (formData.image) {
         imageHash = await uploadToIPFS(formData.image);
@@ -64,11 +64,11 @@ export default function CreatePage() {
         ],
       });
 
-      notification.success('Property tokenized successfully!');
-      router.push('/properties');
+      notification.success("Property tokenized successfully!");
+      router.push("/properties");
     } catch (error) {
-      console.error('Error creating property token:', error);
-      notification.error('Failed to create property token');
+      console.error("Error creating property token:", error);
+      notification.error("Failed to create property token");
     } finally {
       setIsLoading(false);
     }
@@ -163,13 +163,13 @@ export default function CreatePage() {
             type="submit"
             disabled={isLoading || isMining}
             className={`w-full py-3 px-4 bg-primary text-primary-content rounded hover:bg-primary-focus ${
-              (isLoading || isMining) ? 'opacity-50 cursor-not-allowed' : ''
+              isLoading || isMining ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            {isLoading || isMining ? 'Creating Token...' : 'Create Property Token'}
+            {isLoading || isMining ? "Creating Token..." : "Create Property Token"}
           </button>
         </div>
       </form>
     </div>
   );
-} 
+}
