@@ -5,9 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  8453: {
     RealEstateNFT: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0xDC8c68EffDaf526cbE67df99b7d7a10d48A8fa1b",
       abi: [
         {
           inputs: [],

@@ -14,7 +14,27 @@ const nextConfig: NextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
-};
+  images: {
+    domains: [
+      'ipfs.io',
+      'nftstorage.link',
+      'ipfs.nftstorage.link'
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.ipfs.nftstorage.link',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.ipfs.io',
+      }
+    ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  }
+} as NextConfig;
 
 const isIpfs = process.env.NEXT_PUBLIC_IPFS_BUILD === "true";
 
@@ -26,4 +46,4 @@ if (isIpfs) {
   };
 }
 
-module.exports = nextConfig;
+export default nextConfig;
